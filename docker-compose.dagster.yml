@@ -1,0 +1,19 @@
+services:
+  dagster:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dagster
+    container_name: modern-mlops-dagster
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DAGSTER_HOME: /opt/dagster/dagster_home
+      DAGSTER_PG_PASSWORD: ${DAGSTER_DB_PASSWORD:?DAGSTER_DB_PASSWORD is required}
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - ./dagster.yaml:/opt/dagster/dagster_home/dagster.yaml:ro
+      - ./workspace.yaml:/app/workspace.yaml:ro
+      - ./src:/app/src:ro

@@ -1,0 +1,23 @@
+groups:
+  - name: mlops-api
+    rules:
+      - alert: ApiDown
+        expr: up{job="fastapi"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "L'API FastAPI est indisponible"
+
+      - alert: HighErrorRate
+        expr: |
+          (
+            sum(rate(http_requests_total{handler="/predict",status=~"5.."}[5m]))
+            /
+            clamp_min(sum(rate(http_requests_total{handler="/predict"}[5m])), 0.001)
+          ) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Plus de 5 % des predictions echouent"

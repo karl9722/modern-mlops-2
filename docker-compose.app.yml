@@ -1,0 +1,21 @@
+services:
+  api:
+    image: modern-mlops-api:local
+    container_name: modern-mlops-api
+    restart: unless-stopped
+    depends_on:
+      - mlflow
+    environment:
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+    ports:
+      - "127.0.0.1:8001:8000"
+
+  pipeline:
+    image: modern-mlops-pipeline:local
+    container_name: modern-mlops-pipeline
+    profiles:
+      - pipeline
+    environment:
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      DAGSTER_HOME: /opt/dagster/home
+    command: ["python", "-c", "import pyspark, feast, dagster, mlflow; print('Pipeline dependencies OK')"]
