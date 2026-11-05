@@ -56,17 +56,17 @@ jobs:
 
       - name: Build images
         run: |
-          docker build -f docker/api.Dockerfile -t modern-mlops-api:ci .
-          docker build -f docker/pipeline.Dockerfile -t modern-mlops-pipeline:ci .
+          docker build -f docker/api.Dockerfile -t modern-mlops-2-api:ci .
+          docker build -f docker/pipeline.Dockerfile -t modern-mlops-2-pipeline:ci .
 
       - name: Scan the API image (fails on fixable HIGH/CRITICAL issues)
         run: |
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
             aquasec/trivy:0.56.2 image --severity HIGH,CRITICAL --ignore-unfixed \
-            --exit-code 1 modern-mlops-api:ci
+            --exit-code 1 modern-mlops-2-api:ci
 
       - name: Scan the pipeline image (report only)
         run: |
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
-            aquasec/trivy:0.56.2 image --severity HIGH,CRITICAL --ignore-unfixed \
-            --exit-code 0 modern-mlops-pipeline:ci
+            aquasec/trivy:0.56.2 image --timeout 15m --severity HIGH,CRITICAL --ignore-unfixed \
+            --exit-code 0 modern-mlops-2-pipeline:ci

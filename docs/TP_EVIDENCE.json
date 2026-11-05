@@ -1,0 +1,731 @@
+{
+  "repository": "karl9722/modern-mlops-2",
+  "base_commit": "15df8d4c40a301ae8b9f087748ee572885f0ad2a",
+  "implementation_commit": "6807f21ba8b3d1bc0e9a0dbb40759968bdde73a8",
+  "tests": {
+    "passed": 38,
+    "failed": 0,
+    "skipped": 0,
+    "postgresql_real": true,
+    "feast_point_in_time_real": true,
+    "ruff_check": "passed",
+    "ruff_format_check": "passed"
+  },
+  "native_safety_exercises": {
+    "training_job": {
+      "success": true,
+      "baseline_version": "3"
+    },
+    "smoke": "passed",
+    "monitoring": {
+      "rmse": 32587.746815327657,
+      "limit": 47734.724062758534,
+      "drift_share": 0.0
+    },
+    "monitoring_job": "passed",
+    "gate_rejection": {
+      "version": "4",
+      "reasons": [
+        "RMSE 41,975 is worse than the champion's 31,823."
+      ]
+    },
+    "promotion_rollback": {
+      "promoted": "5",
+      "restored": "3"
+    },
+    "accuracy_alert": {
+      "rmse": 130695.66976588953,
+      "limit": 47734.724062758534,
+      "dagster_run_failed": true
+    },
+    "bad_data": [
+      "OverallQual: 4 values outside (1, 10)."
+    ],
+    "final_prediction": {
+      "prediction_id": "92860095-3d84-46af-814e-c6ce6c034b23",
+      "predicted_sale_price": 131073.20218844348,
+      "model_version": "3"
+    }
+  },
+  "compose_registry": {
+    "model_name": "house-price-model",
+    "champion_version": "1",
+    "run_id": "ab87037c738540b7974e05ac6c414868",
+    "metrics": {
+      "mae": 21833.712911566152,
+      "rmse": 31823.149375172357,
+      "r2": 0.8450628608587845,
+      "mape": 0.13405623200159905
+    },
+    "parameters": {
+      "estimator": "Ridge on log1p(price)",
+      "alpha": "1.0",
+      "features": "OverallQual,GrLivArea,GarageCars,TotalBsmtSF,YearBuilt",
+      "train_rows": "1110",
+      "test_rows": "350",
+      "train_end": "2009-06-01",
+      "test_start": "2009-07-01"
+    },
+    "source_sha256": "109d6fec3c78e07e0590fc2d4c4bd2cdb3c256304d159c32a1a9615693250441",
+    "source_matches_commit": "6807f21ba8b3d1bc0e9a0dbb40759968bdde73a8",
+    "raw_sha256": "1e18addf81e5e4d347cc17ee6075bbe4a42b7fa26b9e5b063e8f692a5f929d41",
+    "artifacts": [
+      "data",
+      "model_card.md"
+    ]
+  },
+  "observability": {
+    "prometheus_target": "up",
+    "alert_rules": [
+      "ApiDown",
+      "HighErrorRate",
+      "HighLatency",
+      "ModelNotLoaded",
+      "PredictionLogFailures"
+    ],
+    "grafana_panels": 6,
+    "datasources": [
+      "prometheus",
+      "monitoring-db"
+    ],
+    "monitoring_rows_visible": 9,
+    "grafana_reader_read_only": true
+  },
+  "operations": {
+    "database_outage_prediction": {
+      "prediction_id": "324ae23f-a9d6-4f49-bbeb-3a1c7871a6e2",
+      "predicted_sale_price": 211827.15310186928,
+      "model_version": "1"
+    },
+    "prediction_log_failures_alert": "firing",
+    "storage_recovered": true,
+    "postgres_restore": {
+      "predictions": 8117,
+      "backup_bytes": 424411
+    }
+  },
+  "loadtest": {
+    "users": 20,
+    "duration_seconds": 120,
+    "terminal_final_requests": 7512,
+    "csv_periodic_snapshot_requests": 7508,
+    "failures": 0,
+    "p95_ms": 25,
+    "p99_ms": 45
+  },
+  "artifact_restore": {
+    "files": 9,
+    "all_sha256_match": true
+  },
+  "persistence_restart": {
+    "compose_down_without_volumes_removed": true,
+    "champion_retained": "1",
+    "smoke_after_restart": "passed",
+    "all_seven_services_running": true
+  },
+  "runtime": {
+    "api_uid": 1000,
+    "pipeline_uid": 1000,
+    "api_has_spark": false,
+    "api_has_java": false
+  },
+  "security": {
+    "python_dependency_audit": "no known vulnerabilities found",
+    "api": {
+      "image_id": "sha256:f37984c5e6a6d425d5fe59f551383c420367cbc0ea4fdc942bbd72f11cd0adb5",
+      "scan_completed": true,
+      "severity": "HIGH,CRITICAL",
+      "ignore_unfixed": true,
+      "fixable_findings": 0,
+      "by_severity": {},
+      "enforcement": "blocking",
+      "findings": []
+    },
+    "pipeline": {
+      "image_id": "sha256:0dd1cb21551168500deb50061d4fcbf2e9b987e184fb5e1de29848287ded7691",
+      "scan_completed": true,
+      "severity": "HIGH,CRITICAL",
+      "ignore_unfixed": true,
+      "fixable_findings": 81,
+      "by_severity": {
+        "HIGH": 77,
+        "CRITICAL": 4
+      },
+      "enforcement": "report-only as required by assignment",
+      "findings": [
+        {
+          "package": "com.fasterxml.jackson.core:jackson-core",
+          "version": "2.12.7",
+          "cve": "CVE-2025-52999",
+          "severity": "HIGH",
+          "fixed_version": "2.15.0"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-core",
+          "version": "2.12.7",
+          "cve": "CVE-2026-68494",
+          "severity": "HIGH",
+          "fixed_version": "2.18.8, 2.21.4"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-core",
+          "version": "2.12.7",
+          "cve": "CVE-2026-89425",
+          "severity": "HIGH",
+          "fixed_version": "2.21.7, 2.22.3, 2.18.11"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-core",
+          "version": "2.13.4",
+          "cve": "CVE-2025-52999",
+          "severity": "HIGH",
+          "fixed_version": "2.15.0"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-core",
+          "version": "2.13.4",
+          "cve": "CVE-2026-68494",
+          "severity": "HIGH",
+          "fixed_version": "2.18.8, 2.21.4"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-core",
+          "version": "2.13.4",
+          "cve": "CVE-2026-89425",
+          "severity": "HIGH",
+          "fixed_version": "2.21.7, 2.22.3, 2.18.11"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-core",
+          "version": "2.15.2",
+          "cve": "CVE-2026-68494",
+          "severity": "HIGH",
+          "fixed_version": "2.18.8, 2.21.4"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-core",
+          "version": "2.15.2",
+          "cve": "CVE-2026-89425",
+          "severity": "HIGH",
+          "fixed_version": "2.21.7, 2.22.3, 2.18.11"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-databind",
+          "version": "2.12.7",
+          "cve": "CVE-2022-42003",
+          "severity": "HIGH",
+          "fixed_version": "2.12.7.1, 2.13.4.2"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-databind",
+          "version": "2.12.7",
+          "cve": "CVE-2022-42004",
+          "severity": "HIGH",
+          "fixed_version": "2.12.7.1, 2.13.4"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-databind",
+          "version": "2.12.7",
+          "cve": "CVE-2026-54512",
+          "severity": "HIGH",
+          "fixed_version": "2.18.8, 3.1.4, 2.21.4"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-databind",
+          "version": "2.12.7",
+          "cve": "CVE-2026-54513",
+          "severity": "HIGH",
+          "fixed_version": "2.18.8, 2.21.4, 3.1.4"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-databind",
+          "version": "2.12.7",
+          "cve": "CVE-2026-91776",
+          "severity": "HIGH",
+          "fixed_version": "2.18.11, 2.21.7, 2.22.3"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-databind",
+          "version": "2.12.7",
+          "cve": "CVE-2026-91777",
+          "severity": "HIGH",
+          "fixed_version": "2.21.7, 2.18.11, 2.22.3"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-databind",
+          "version": "2.13.4.2",
+          "cve": "CVE-2026-54512",
+          "severity": "HIGH",
+          "fixed_version": "2.18.8, 3.1.4, 2.21.4"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-databind",
+          "version": "2.13.4.2",
+          "cve": "CVE-2026-54513",
+          "severity": "HIGH",
+          "fixed_version": "2.18.8, 2.21.4, 3.1.4"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-databind",
+          "version": "2.13.4.2",
+          "cve": "CVE-2026-91776",
+          "severity": "HIGH",
+          "fixed_version": "2.18.11, 2.21.7, 2.22.3"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-databind",
+          "version": "2.13.4.2",
+          "cve": "CVE-2026-91777",
+          "severity": "HIGH",
+          "fixed_version": "2.21.7, 2.18.11, 2.22.3"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-databind",
+          "version": "2.15.2",
+          "cve": "CVE-2026-54512",
+          "severity": "HIGH",
+          "fixed_version": "2.18.8, 3.1.4, 2.21.4"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-databind",
+          "version": "2.15.2",
+          "cve": "CVE-2026-54513",
+          "severity": "HIGH",
+          "fixed_version": "2.18.8, 2.21.4, 3.1.4"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-databind",
+          "version": "2.15.2",
+          "cve": "CVE-2026-68497",
+          "severity": "HIGH",
+          "fixed_version": "2.18.10, 2.21.6, 2.22.2"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-databind",
+          "version": "2.15.2",
+          "cve": "CVE-2026-91776",
+          "severity": "HIGH",
+          "fixed_version": "2.18.11, 2.21.7, 2.22.3"
+        },
+        {
+          "package": "com.fasterxml.jackson.core:jackson-databind",
+          "version": "2.15.2",
+          "cve": "CVE-2026-91777",
+          "severity": "HIGH",
+          "fixed_version": "2.21.7, 2.18.11, 2.22.3"
+        },
+        {
+          "package": "com.google.code.gson:gson",
+          "version": "2.2.4",
+          "cve": "CVE-2022-25647",
+          "severity": "HIGH",
+          "fixed_version": "2.8.9"
+        },
+        {
+          "package": "com.google.guava:guava",
+          "version": "14.0.1",
+          "cve": "CVE-2026-102554",
+          "severity": "HIGH",
+          "fixed_version": "33.7.2"
+        },
+        {
+          "package": "com.google.guava:guava",
+          "version": "14.0.1",
+          "cve": "CVE-2026-102554",
+          "severity": "HIGH",
+          "fixed_version": "33.7.2"
+        },
+        {
+          "package": "com.google.guava:guava",
+          "version": "30.1.1-jre",
+          "cve": "CVE-2026-102554",
+          "severity": "HIGH",
+          "fixed_version": "33.7.2"
+        },
+        {
+          "package": "com.google.guava:guava",
+          "version": "30.1.1-jre",
+          "cve": "CVE-2026-102554",
+          "severity": "HIGH",
+          "fixed_version": "33.7.2"
+        },
+        {
+          "package": "com.google.protobuf:protobuf-java",
+          "version": "3.3.0",
+          "cve": "CVE-2021-22569",
+          "severity": "HIGH",
+          "fixed_version": "3.16.1, 3.18.2, 3.19.2"
+        },
+        {
+          "package": "com.google.protobuf:protobuf-java",
+          "version": "3.3.0",
+          "cve": "CVE-2022-3509",
+          "severity": "HIGH",
+          "fixed_version": "3.16.3, 3.19.6, 3.20.3, 3.21.7"
+        },
+        {
+          "package": "com.google.protobuf:protobuf-java",
+          "version": "3.3.0",
+          "cve": "CVE-2022-3510",
+          "severity": "HIGH",
+          "fixed_version": "3.16.3, 3.19.6, 3.20.3, 3.21.7"
+        },
+        {
+          "package": "com.google.protobuf:protobuf-java",
+          "version": "3.3.0",
+          "cve": "CVE-2024-7254",
+          "severity": "HIGH",
+          "fixed_version": "3.25.5, 4.27.5, 4.28.2"
+        },
+        {
+          "package": "com.google.protobuf:protobuf-java",
+          "version": "3.7.1",
+          "cve": "CVE-2021-22569",
+          "severity": "HIGH",
+          "fixed_version": "3.16.1, 3.18.2, 3.19.2"
+        },
+        {
+          "package": "com.google.protobuf:protobuf-java",
+          "version": "3.7.1",
+          "cve": "CVE-2022-3509",
+          "severity": "HIGH",
+          "fixed_version": "3.16.3, 3.19.6, 3.20.3, 3.21.7"
+        },
+        {
+          "package": "com.google.protobuf:protobuf-java",
+          "version": "3.7.1",
+          "cve": "CVE-2022-3510",
+          "severity": "HIGH",
+          "fixed_version": "3.16.3, 3.19.6, 3.20.3, 3.21.7"
+        },
+        {
+          "package": "com.google.protobuf:protobuf-java",
+          "version": "3.7.1",
+          "cve": "CVE-2024-7254",
+          "severity": "HIGH",
+          "fixed_version": "3.25.5, 4.27.5, 4.28.2"
+        },
+        {
+          "package": "com.nimbusds:nimbus-jose-jwt",
+          "version": "9.8.1",
+          "cve": "CVE-2023-52428",
+          "severity": "HIGH",
+          "fixed_version": "9.37.2"
+        },
+        {
+          "package": "com.squareup.okhttp3:okhttp",
+          "version": "3.12.12",
+          "cve": "CVE-2021-0341",
+          "severity": "HIGH",
+          "fixed_version": "4.9.2"
+        },
+        {
+          "package": "commons-beanutils:commons-beanutils",
+          "version": "1.9.4",
+          "cve": "CVE-2025-48734",
+          "severity": "HIGH",
+          "fixed_version": "1.11.0"
+        },
+        {
+          "package": "commons-io:commons-io",
+          "version": "2.8.0",
+          "cve": "CVE-2024-47554",
+          "severity": "HIGH",
+          "fixed_version": "2.14.0"
+        },
+        {
+          "package": "dnsjava:dnsjava",
+          "version": "2.1.7",
+          "cve": "CVE-2024-25638",
+          "severity": "HIGH",
+          "fixed_version": "3.6.0"
+        },
+        {
+          "package": "io.airlift:aircompressor",
+          "version": "0.27",
+          "cve": "CVE-2025-67721",
+          "severity": "HIGH",
+          "fixed_version": "2.0.3"
+        },
+        {
+          "package": "io.netty:netty-codec",
+          "version": "4.1.96.Final",
+          "cve": "CVE-2026-42583",
+          "severity": "HIGH",
+          "fixed_version": "4.1.133.Final"
+        },
+        {
+          "package": "io.netty:netty-codec",
+          "version": "4.1.96.Final",
+          "cve": "CVE-2026-59901",
+          "severity": "HIGH",
+          "fixed_version": "4.1.136.Final"
+        },
+        {
+          "package": "io.netty:netty-codec-http",
+          "version": "4.1.96.Final",
+          "cve": "CVE-2026-33870",
+          "severity": "HIGH",
+          "fixed_version": "4.1.132.Final, 4.2.10.Final"
+        },
+        {
+          "package": "io.netty:netty-codec-http",
+          "version": "4.1.96.Final",
+          "cve": "CVE-2026-42584",
+          "severity": "HIGH",
+          "fixed_version": "4.2.13.Final, 4.1.133.Final"
+        },
+        {
+          "package": "io.netty:netty-codec-http",
+          "version": "4.1.96.Final",
+          "cve": "CVE-2026-42587",
+          "severity": "HIGH",
+          "fixed_version": "4.2.13.Final, 4.1.133.Final"
+        },
+        {
+          "package": "io.netty:netty-codec-http",
+          "version": "4.1.96.Final",
+          "cve": "CVE-2026-55831",
+          "severity": "HIGH",
+          "fixed_version": "4.2.16.Final, 4.1.136.Final"
+        },
+        {
+          "package": "io.netty:netty-codec-http",
+          "version": "4.1.96.Final",
+          "cve": "CVE-2026-55833",
+          "severity": "HIGH",
+          "fixed_version": "4.2.16.Final, 4.1.136.Final"
+        },
+        {
+          "package": "io.netty:netty-codec-http",
+          "version": "4.1.96.Final",
+          "cve": "CVE-2026-56745",
+          "severity": "HIGH",
+          "fixed_version": "4.2.16.Final, 4.1.136.Final"
+        },
+        {
+          "package": "io.netty:netty-codec-http2",
+          "version": "4.1.96.Final",
+          "cve": "CVE-2025-55163",
+          "severity": "HIGH",
+          "fixed_version": "4.2.4.Final, 4.1.124.Final"
+        },
+        {
+          "package": "io.netty:netty-codec-http2",
+          "version": "4.1.96.Final",
+          "cve": "CVE-2026-33871",
+          "severity": "HIGH",
+          "fixed_version": "4.1.132.Final, 4.2.11.Final"
+        },
+        {
+          "package": "io.netty:netty-codec-http2",
+          "version": "4.1.96.Final",
+          "cve": "CVE-2026-42587",
+          "severity": "HIGH",
+          "fixed_version": "4.2.13.Final, 4.1.133.Final"
+        },
+        {
+          "package": "io.netty:netty-codec-http2",
+          "version": "4.1.96.Final",
+          "cve": "CVE-2026-56819",
+          "severity": "HIGH",
+          "fixed_version": "4.2.16.Final, 4.1.136.Final"
+        },
+        {
+          "package": "io.netty:netty-codec-http2",
+          "version": "4.1.96.Final",
+          "cve": "GHSA-xpw8-rcwv-8f8p",
+          "severity": "HIGH",
+          "fixed_version": "4.1.100.Final"
+        },
+        {
+          "package": "io.netty:netty-handler",
+          "version": "4.1.96.Final",
+          "cve": "CVE-2026-75595",
+          "severity": "CRITICAL",
+          "fixed_version": "4.2.17.Final, 4.1.137.Final"
+        },
+        {
+          "package": "io.netty:netty-handler",
+          "version": "4.1.96.Final",
+          "cve": "CVE-2025-24970",
+          "severity": "HIGH",
+          "fixed_version": "4.1.118.Final"
+        },
+        {
+          "package": "io.netty:netty-handler",
+          "version": "4.1.96.Final",
+          "cve": "CVE-2026-44249",
+          "severity": "HIGH",
+          "fixed_version": "4.2.15.Final, 4.1.135.Final"
+        },
+        {
+          "package": "io.netty:netty-handler",
+          "version": "4.1.96.Final",
+          "cve": "CVE-2026-45416",
+          "severity": "HIGH",
+          "fixed_version": "4.2.15.Final, 4.1.135.Final"
+        },
+        {
+          "package": "io.netty:netty-handler",
+          "version": "4.1.96.Final",
+          "cve": "CVE-2026-50010",
+          "severity": "HIGH",
+          "fixed_version": "4.2.15.Final, 4.1.135.Final"
+        },
+        {
+          "package": "net.minidev:json-smart",
+          "version": "1.3.2",
+          "cve": "CVE-2021-31684",
+          "severity": "HIGH",
+          "fixed_version": "1.3.3, 2.4.4"
+        },
+        {
+          "package": "net.minidev:json-smart",
+          "version": "1.3.2",
+          "cve": "CVE-2023-1370",
+          "severity": "HIGH",
+          "fixed_version": "2.4.9"
+        },
+        {
+          "package": "org.apache.avro:avro",
+          "version": "1.7.7",
+          "cve": "CVE-2024-47561",
+          "severity": "CRITICAL",
+          "fixed_version": "1.11.4"
+        },
+        {
+          "package": "org.apache.avro:avro",
+          "version": "1.7.7",
+          "cve": "CVE-2023-39410",
+          "severity": "HIGH",
+          "fixed_version": "1.11.3"
+        },
+        {
+          "package": "org.apache.derby:derby",
+          "version": "10.14.2.0",
+          "cve": "CVE-2022-46337",
+          "severity": "CRITICAL",
+          "fixed_version": "10.14.2.1, 10.16.1.2, 10.15.2.1"
+        },
+        {
+          "package": "org.apache.kerby:kerb-server",
+          "version": "1.0.1",
+          "cve": "CVE-2026-57915",
+          "severity": "HIGH",
+          "fixed_version": "2.1.2"
+        },
+        {
+          "package": "org.apache.mesos:mesos",
+          "version": "1.4.3",
+          "cve": "CVE-2018-1330",
+          "severity": "HIGH",
+          "fixed_version": "1.6.0"
+        },
+        {
+          "package": "org.apache.thrift:libthrift",
+          "version": "0.12.0",
+          "cve": "CVE-2019-0205",
+          "severity": "HIGH",
+          "fixed_version": "0.13.0"
+        },
+        {
+          "package": "org.apache.thrift:libthrift",
+          "version": "0.12.0",
+          "cve": "CVE-2020-13949",
+          "severity": "HIGH",
+          "fixed_version": "0.14.0"
+        },
+        {
+          "package": "org.apache.thrift:libthrift",
+          "version": "0.12.0",
+          "cve": "CVE-2026-43869",
+          "severity": "HIGH",
+          "fixed_version": "0.23.0"
+        },
+        {
+          "package": "org.apache.thrift:libthrift",
+          "version": "0.12.0",
+          "cve": "CVE-2026-43871",
+          "severity": "HIGH",
+          "fixed_version": "0.24.0"
+        },
+        {
+          "package": "org.apache.zookeeper:zookeeper",
+          "version": "3.6.3",
+          "cve": "CVE-2023-44981",
+          "severity": "CRITICAL",
+          "fixed_version": "3.7.2, 3.8.3, 3.9.1"
+        },
+        {
+          "package": "org.eclipse.jetty:jetty-http",
+          "version": "9.4.43.v20210629",
+          "cve": "CVE-2026-2332",
+          "severity": "HIGH",
+          "fixed_version": "12.1.7, 12.0.33, 11.0.29, 10.0.28, 9.4.60"
+        },
+        {
+          "package": "org.eclipse.jetty:jetty-http",
+          "version": "9.4.58.v20250814",
+          "cve": "CVE-2026-2332",
+          "severity": "HIGH",
+          "fixed_version": "12.1.7, 12.0.33, 11.0.29, 10.0.28, 9.4.60"
+        },
+        {
+          "package": "org.eclipse.jetty:jetty-security",
+          "version": "9.4.58.v20250814",
+          "cve": "CVE-2026-10050",
+          "severity": "HIGH",
+          "fixed_version": "9.4.63, 10.0.31, 11.0.31, 12.0.36, 12.1.10"
+        },
+        {
+          "package": "org.jline:jline-builtins",
+          "version": "3.9.0",
+          "cve": "CVE-2026-77422",
+          "severity": "HIGH",
+          "fixed_version": "4.3.1, 3.30.15"
+        },
+        {
+          "package": "org.jline:jline-remote-telnet",
+          "version": "3.9.0",
+          "cve": "CVE-2026-56740",
+          "severity": "HIGH",
+          "fixed_version": "4.2.1, 4.0.16, 3.30.14"
+        },
+        {
+          "package": "org.jline:jline-remote-telnet",
+          "version": "3.9.0",
+          "cve": "CVE-2026-56741",
+          "severity": "HIGH",
+          "fixed_version": "4.2.1, 4.0.16, 3.30.14"
+        },
+        {
+          "package": "org.lz4:lz4-java",
+          "version": "1.8.0",
+          "cve": "CVE-2025-12183",
+          "severity": "HIGH",
+          "fixed_version": "1.8.1"
+        },
+        {
+          "package": "org.xerial.snappy:snappy-java",
+          "version": "1.1.10.5",
+          "cve": "CVE-2026-108106",
+          "severity": "HIGH",
+          "fixed_version": "1.1.10.9"
+        },
+        {
+          "package": "org.xerial.snappy:snappy-java",
+          "version": "1.1.10.5",
+          "cve": "CVE-2026-93451",
+          "severity": "HIGH",
+          "fixed_version": "1.1.10.9"
+        }
+      ]
+    }
+  },
+  "external_limits": [
+    "Local IDE extensions not verified",
+    "OpenML direct access denied; pinned SHA-256 verified Ames mirror used",
+    "GitHub API Forbidden: draft PR creation blocked; Actions and GHCR release not executed"
+  ]
+}
