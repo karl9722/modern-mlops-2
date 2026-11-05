@@ -1,4 +1,4 @@
-﻿import subprocess
+import subprocess
 from pathlib import Path
 
 from dotenv import dotenv_values
@@ -33,19 +33,23 @@ GRANT CONNECT ON DATABASE "{database}" TO "{username}";
 """
 
     command = [
-        "docker", "compose", "exec", "-T",
-        "postgres", "psql",
-        "-U", "postgres",
-        "-d", "postgres",
-        "-v", "ON_ERROR_STOP=1",
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "postgres",
+        "psql",
+        "-U",
+        "postgres",
+        "-d",
+        "postgres",
+        "-v",
+        "ON_ERROR_STOP=1",
     ]
 
     # Transmettre le secret par l'entrée standard,
     # sans le placer dans les arguments du processus.
-    script = (
-        "\\set password '" + password.replace("'", "''") + "'\n"
-        + sql
-    )
+    script = "\\set password '" + password.replace("'", "''") + "'\n" + sql
 
     result = subprocess.run(
         command,
@@ -55,9 +59,7 @@ GRANT CONNECT ON DATABASE "{database}" TO "{username}";
     )
 
     if result.returncode != 0:
-        raise RuntimeError(
-            f"Erreur pour {username} : {result.stderr}"
-        )
+        raise RuntimeError(f"Erreur pour {username} : {result.stderr}")
 
     print(f"Utilisateur {username} : OK")
 

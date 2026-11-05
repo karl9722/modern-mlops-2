@@ -7,4 +7,15 @@ datasources:
     access: proxy
     url: http://prometheus:9090
     isDefault: true
-    editable: true
+
+  - name: Monitoring DB
+    uid: monitoring-db
+    type: grafana-postgresql-datasource
+    url: postgres:5432
+    user: grafana_reader
+    jsonData:
+      database: monitoring
+      sslmode: disable
+      postgresVersion: 1600
+    secureJsonData:
+      password: $GRAFANA_DB_PASSWORD

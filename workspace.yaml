@@ -1,4 +1,3 @@
 load_from:
-  - python_file:
-      relative_path: src/mlops/definitions.py
-      working_directory: /app
+  - python_module:
+      module_name: mlops.orchestration

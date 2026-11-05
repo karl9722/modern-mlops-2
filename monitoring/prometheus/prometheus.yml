@@ -1,10 +1,14 @@
+# Prometheus pulls ("scrapes") metrics from the API every 15 seconds and evaluates the
+# alert rules just as often.
 global:
   scrape_interval: 15s
+  evaluation_interval: 15s
 
 rule_files:
   - /etc/prometheus/alert_rules.yml
 
 scrape_configs:
-  - job_name: "fastapi"
+  - job_name: house-price-api
+    metrics_path: /metrics
     static_configs:
-      - targets: ["host.docker.internal:8000"]
+      - targets: ["api:8000"]  # the Compose service name, not localhost

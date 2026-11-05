@@ -1,11 +1,6 @@
-﻿from pyspark.sql import SparkSession
+from pyspark.sql import SparkSession
 
-spark = (
-    SparkSession.builder
-    .master("local[2]")
-    .appName("modern-mlops-test")
-    .getOrCreate()
-)
+spark = SparkSession.builder.master("local[2]").appName("modern-mlops-test").getOrCreate()
 
 spark.sparkContext.setLogLevel("ERROR")
 

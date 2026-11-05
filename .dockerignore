@@ -7,3 +7,7 @@ feature_repo/data
 **/__pycache__
 .pytest_cache
 .ruff_cache
+requirements-audit.txt
+backup-*.sql
+*.dump
+mlflow-artifacts-*.tgz

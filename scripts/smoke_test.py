@@ -1,35 +1,62 @@
-﻿import json
+"""Smoke test against a running stack.
+
+Usage: uv run python scripts/smoke_test.py --api-key KEY [--base-url http://127.0.0.1:8001]
+"""
+
+import argparse
 import os
-import urllib.request
+import sys
 
-BASE = os.getenv("API_URL", "http://127.0.0.1:8001")
+import httpx
 
-def check(path):
-    with urllib.request.urlopen(BASE + path, timeout=15) as response:
-        assert response.status == 200
-        print(f"PASS {path}")
+SAMPLE = {
+    "OverallQual": 7,
+    "GrLivArea": 1800,
+    "GarageCars": 2,
+    "TotalBsmtSF": 900,
+    "YearBuilt": 2005,
+}
 
-def predict():
-    payload = json.dumps({
-        "surface": 120,
-        "bedrooms": 3,
-        "age": 10,
-        "distance_center": 5.0
-    }).encode("utf-8")
 
-    request = urllib.request.Request(
-        BASE + "/predict",
-        data=payload,
-        headers={"Content-Type": "application/json"},
-        method="POST"
-    )
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--api-key", default=os.getenv("API_KEYS", "").split(",")[0].strip())
+    parser.add_argument("--base-url", default="http://127.0.0.1:8001")
+    args = parser.parse_args()
+    if not args.api_key:
+        parser.error("Set API_KEYS (e.g. --env-file .env) or provide --api-key.")
 
-    with urllib.request.urlopen(request, timeout=30) as response:
-        result = json.load(response)
-        assert isinstance(result["predicted_price"], (int, float))
-        print("PASS /predict :", result["predicted_price"])
+    results: list[bool] = []
 
-check("/health")
-check("/metrics")
-predict()
-print("SMOKE TEST OK")
+    def check(name: str, ok: bool, detail: str = "") -> None:
+        print(f"{'PASS' if ok else 'FAIL'}  {name}  {detail if not ok else ''}")
+        results.append(ok)
+
+    headers = {"X-API-Key": args.api_key}
+    with httpx.Client(base_url=args.base_url, timeout=10) as client:
+        check("health", client.get("/health").status_code == 200)
+
+        response = client.get("/ready")
+        check("ready (champion loaded)", response.status_code == 200, response.text)
+
+        response = client.post("/predict", json=SAMPLE, headers=headers)
+        check("predict", response.status_code == 200, response.text)
+        if response.status_code == 200:
+            prediction_id = response.json()["prediction_id"]
+            body = {"prediction_id": prediction_id, "actual_sale_price": 210_000}
+            response = client.post("/feedback", json=body, headers=headers)
+            check("feedback", response.status_code == 201, response.text)
+
+        response = client.post("/predict", json=SAMPLE, headers={"X-API-Key": "wrong"})
+        check("rejects a wrong API key", response.status_code == 401)
+
+        response = client.post("/predict", json={**SAMPLE, "OverallQual": 100}, headers=headers)
+        check("rejects invalid input", response.status_code == 422)
+
+        check("metrics exposed", "http_requests_total" in client.get("/metrics").text)
+
+    return 0 if all(results) else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
